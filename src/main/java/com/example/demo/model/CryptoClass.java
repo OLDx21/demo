@@ -2,19 +2,39 @@ package com.example.demo.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
+
 @Document
 public class CryptoClass {
     @Id
     double unix;
-
+    @Field
     int tradecount;
+    @Field
     String symbol;
+    @Field
     Date date;
-    double open,high,low,close,VolumeADA,VolumeUSDT;
+    @Field
+    double open;
+    @Field
+    double high;
+    @Field
+    double low;
+    @Field
+    double close;
+    @Field
+    double VolumeADA;
+    @Field
+    double VolumeUSDT;
 
-    public CryptoClass(double unix,Date date,  String symbol, double open, double high, double low, double close, double volumeADA, double volumeUSDT, int tradecount) {
+
+    public CryptoClass() {
+
+    }
+
+    public CryptoClass(double unix, Date date, String symbol, double open, double high, double low, double close, double volumeADA, double volumeUSDT, int tradecount) {
         this.unix = unix;
         this.tradecount = tradecount;
         this.date = date;
@@ -23,8 +43,8 @@ public class CryptoClass {
         this.high = high;
         this.low = low;
         this.close = close;
-        VolumeADA = volumeADA;
-        VolumeUSDT = volumeUSDT;
+        this.VolumeADA = volumeADA;
+        this.VolumeUSDT = volumeUSDT;
     }
 
     public double getUnix() {
@@ -92,19 +112,34 @@ public class CryptoClass {
     }
 
     public double getVolumeADA() {
-        return VolumeADA;
+        return this.VolumeADA;
     }
 
     public void setVolumeADA(double volumeADA) {
-        VolumeADA = volumeADA;
+        this.VolumeADA = volumeADA;
     }
 
     public double getVolumeUSDT() {
-        return VolumeUSDT;
+        return this.VolumeUSDT;
     }
 
     public void setVolumeUSDT(double volumeUSDT) {
-        VolumeUSDT = volumeUSDT;
+        this.VolumeUSDT = volumeUSDT;
     }
 
+    @Override
+    public String toString() {
+        return "CryptoClass{" +
+                "unix=" + unix +
+                ", tradecount=" + tradecount +
+                ", symbol='" + symbol + '\'' +
+                ", date=" + date +
+                ", open=" + open +
+                ", high=" + high +
+                ", low=" + low +
+                ", close=" + close +
+                ", VolumeADA=" + VolumeADA +
+                ", VolumeUSDT=" + VolumeUSDT +
+                '}';
+    }
 }

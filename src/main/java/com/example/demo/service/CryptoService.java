@@ -5,6 +5,8 @@ import com.example.demo.data.CryproRepository;
 import com.example.demo.model.CryptoClass;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +14,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,11 @@ public class CryptoService {
     @Autowired
     CryproRepository repository;
 
-
+    /**
+     * Task 1 and 2
+     *
+     *Method to use once at the first start of the server, to write data to the database
+     **/
     @PostConstruct
     public void init() {
         List<CryptoClass> CryptoInfo = new ArrayList<>();
@@ -72,16 +77,30 @@ public class CryptoService {
             }
         }
     }
-
-    public List<CryptoClass> findAll() {
-        return repository.findAll();
+    public Page<CryptoClass> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
-    public List<CryptoClass> getStatistics(int year, int month) {
-        return repository.findByCustomQuery(year, month);
+    /**
+     * Task 5
+     */
+    public List<CryptoClass> getStatistics(int month, int year) {
+        List<CryptoClass> allInfo = repository.findAll();
+        List<CryptoClass> cryptoClassList = new ArrayList<>();
+
+        for (int i = 0; i < allInfo.size(); i++) {
+            if (allInfo.get(i).getDate().getMonth() == month && allInfo.get(i).getDate().getYear() == year) {
+                cryptoClassList.add(allInfo.get(i));
+            }
+        }
+        allInfo = null;
+        return cryptoClassList;
     }
 
-    public List<CryptoClass> findByMonth(LocalDate from, LocalDate to) {
-        return repository.findByDateBetween(from, to);
+    /**
+     * Task 4
+     */
+    public List<CryptoClass> findByMonth(Date firstdayofmonth, Date lastdayofmonth) {
+        return repository.findByDateBetween(firstdayofmonth, lastdayofmonth);
     }
 }
